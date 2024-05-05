@@ -24,8 +24,14 @@ public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPass
         return null;
     }
 
+    // 向数据库中插入新的用户信息
     @Override
-    public void createUser(UserDetails user) {
+    public void createUser(UserDetails userDetails) {
+        User user = new User();
+        user.setUsername(userDetails.getUsername());
+        user.setPassword(userDetails.getPassword());
+        user.setEnabled(true);
+        userMapper.insert(user);
 
     }
 
