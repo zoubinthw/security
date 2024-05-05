@@ -44,6 +44,8 @@ public class WebSecurityConfig {
                 .formLogin(Customizer.withDefaults());
                 // 基本授权方式: 没有表单授权方式后, 使用该方式会已alert的形式输入用户登录信息, 这种方式没有登出页面, 要么自己写, 要么清缓存, 这种方式没卵用
 //                .httpBasic(Customizer.withDefaults());
+        // 关闭针对post请求的csrf保护
+        http.csrf(csrf -> csrf.disable());
         return http.build();
     }
 }
