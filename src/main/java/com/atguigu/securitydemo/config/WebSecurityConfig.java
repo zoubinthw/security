@@ -3,8 +3,9 @@ package com.atguigu.securitydemo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration // 配置类
 //@EnableWebSecurity // 开启spring security自定义配置(springboot项目可省略)
@@ -27,4 +28,22 @@ public class WebSecurityConfig {
 //        // 创建基于数据库的用户信息管理器
 //        return new DBUserDetailsManager();
 //    }
+
+    // springboot security的默认认证行为
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // 开启授权保护
+        http.authorizeHttpRequests(
+                authorize -> authorize
+                                // 对所有请求开启授权保护
+                                .anyRequest()
+                                // 已认证的请求会被自动授权
+                                .authenticated()
+                )
+                // 自动表单认证, 也就是生成默认的登录(和登出)表单
+                .formLogin(Customizer.withDefaults());
+                // 基本授权方式: 没有表单授权方式后, 使用该方式会已alert的形式输入用户登录信息, 这种方式没有登出页面, 要么自己写, 要么清缓存, 这种方式没卵用
+//                .httpBasic(Customizer.withDefaults());
+        return http.build();
+    }
 }
