@@ -4,10 +4,12 @@ import com.atguigu.securitydemo.entity.User;
 import com.atguigu.securitydemo.mapper.UserMapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,8 @@ import java.util.Collection;
 public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPasswordService {
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails updatePassword(UserDetails user, String newPassword) {
@@ -29,7 +33,7 @@ public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPass
     public void createUser(UserDetails userDetails) {
         User user = new User();
         user.setUsername(userDetails.getUsername());
-        user.setPassword(userDetails.getPassword());
+        user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
         user.setEnabled(true);
         userMapper.insert(user);
 
@@ -74,7 +78,7 @@ public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPass
             return new org.springframework.security.core.userdetails.User(
                     user.getUsername(),
                     user.getPassword(),
-                    user.getEnabled(),
+                    user.isEnabled(),
                     true,  //用户账号是否过期
                     true, // 用户凭证是否过期
                     true, // 用户是否未被锁定

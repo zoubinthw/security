@@ -16,12 +16,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public void saveUserDetails(User user) {
-        UserDetails userDetails = org.springframework.security.core.userdetails.User
-                // 默认加密方法
-                .withDefaultPasswordEncoder()
-                .username(user.getUsername())
-                .password(user.getUsername())
-                .build();
-        userDetailsManager.createUser(userDetails);
+        userDetailsManager.createUser(user);
     }
 }
