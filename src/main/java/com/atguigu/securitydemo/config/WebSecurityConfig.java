@@ -42,7 +42,9 @@ public class WebSecurityConfig {
                                 .authenticated()
                 )
                 // 自动表单认证, 也就是生成默认的登录(和登出)表单
-                .formLogin(Customizer.withDefaults());
+                .formLogin(form -> {
+                    form.loginPage("/login").permitAll();// 无需授权即可访问当前页面
+                });
                 // 基本授权方式: 没有表单授权方式后, 使用该方式会已alert的形式输入用户登录信息, 这种方式没有登出页面, 要么自己写, 要么清缓存, 这种方式没卵用
 //                .httpBasic(Customizer.withDefaults());
         // 关闭针对post请求的csrf保护
