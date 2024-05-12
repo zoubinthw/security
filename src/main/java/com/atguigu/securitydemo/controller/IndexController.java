@@ -1,12 +1,12 @@
 package com.atguigu.securitydemo.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/security")
+@Controller
 public class IndexController {
-    @GetMapping("/index")
+    @GetMapping("/")
     public String hello() {
-        return "index2";
+        return "index";
     }
 }
