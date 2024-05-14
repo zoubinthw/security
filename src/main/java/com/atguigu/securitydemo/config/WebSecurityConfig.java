@@ -4,6 +4,7 @@ package com.atguigu.securitydemo.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -45,11 +46,12 @@ public class WebSecurityConfig {
                         usernameParameter("myusername"). // 自定义表单用户名参数, 默认值: username
                         passwordParameter("mypassword").// 同理密码, 默认值: password
                         failureUrl("/login?failure"). //校验失败, 跳转地址, 默认值: error
-                        successHandler(new MyAuthenticationSuccessHandler())); // 认证成功时的处理
+                        successHandler(new MyAuthenticationSuccessHandler()).// 认证成功时的处理
+                        failureHandler(new MyAuthenticationFailureHandler())); // 认证失败时的处理
                 // 基本授权方式: 没有表单授权方式后, 使用该方式会已alert的形式输入用户登录信息, 这种方式没有登出页面, 要么自己写, 要么清缓存, 这种方式没卵用
 //                .httpBasic(Customizer.withDefaults());
         // 关闭针对post请求的csrf保护
-        http.csrf(csrf -> csrf.disable());
+        http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 
