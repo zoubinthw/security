@@ -3,6 +3,7 @@ package com.atguigu.securitydemo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -56,7 +57,10 @@ public class WebSecurityConfig {
 
         http.exceptionHandling(exception -> exception.authenticationEntryPoint(new MyAuthenticationEntryPoint())); //请求未认证的处理
         // 关闭针对post请求的csrf保护
-        http.csrf(AbstractHttpConfigurer::disable);
+//        http.csrf(AbstractHttpConfigurer::disable);
+
+        // security全局范围内开启后端服务的跨域访问
+        http.csrf(Customizer.withDefaults());
         return http.build();
     }
 
