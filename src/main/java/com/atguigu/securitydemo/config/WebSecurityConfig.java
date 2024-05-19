@@ -37,10 +37,10 @@ public class WebSecurityConfig {
         // 开启授权保护
         http.authorizeHttpRequests(
                 authorize -> authorize
-                                // 对所有请求开启授权保护
-                                .anyRequest()
-                                // 已认证的请求会被自动授权
-                                .authenticated()
+                        .requestMatchers("/user/list").hasAuthority("USER_LIST") // 拥有USER_LIST权限的用户, 可以访问/user/list资源(USER_ADD/LIST是我们自己定义的)
+                        .requestMatchers("/user/add").hasAuthority("USER_ADD") // 拥有USER_ASS权限的用户, 可以访问/user/add资源
+                        .anyRequest() // 对所有请求开启授权保护
+                        .authenticated() // 已认证的请求会被自动授权
                 ); // 授权配置
                 // 自动表单认证, 也就是生成默认的登录(和登出)表单
         http.formLogin(form -> form.loginPage("/login").permitAll(). //无需授权即可访问当前页面
@@ -57,7 +57,7 @@ public class WebSecurityConfig {
 
         http.exceptionHandling(exception -> exception.authenticationEntryPoint(new MyAuthenticationEntryPoint())); //请求未认证的处理
         // 关闭针对post请求的csrf保护
-//        http.csrf(AbstractHttpConfigurer::disable);
+        http.csrf(AbstractHttpConfigurer::disable);
 
         // 配置会话对象, 针对于同一个账号, 最多可以在几个客户端登录
         http.sessionManagement(session -> { // 最多在1个, 超过则挤掉之前的, 然后定义挤掉后的策略
@@ -65,7 +65,7 @@ public class WebSecurityConfig {
         });
 
         // security全局范围内开启后端服务的跨域访问
-        http.csrf(Customizer.withDefaults());
+//        http.csrf(Customizer.withDefaults());
         return http.build();
     }
 
