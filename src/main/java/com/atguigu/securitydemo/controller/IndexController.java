@@ -17,9 +17,9 @@ public class IndexController {
     public Map<Object, Object> hello() {
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
-        Object principal = authentication.getPrincipal();
-        Object credentials = authentication.getCredentials(); // 脱敏
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        Object principal = authentication.getPrincipal(); // 身份信息
+        Object credentials = authentication.getCredentials(); // 获取密码要做脱敏处理的(秘密等)
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities(); // 权限
 
         String name = authentication.getName();
         Map<Object, Object> result = new HashMap<>();
