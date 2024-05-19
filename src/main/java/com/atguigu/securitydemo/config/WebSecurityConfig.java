@@ -59,6 +59,11 @@ public class WebSecurityConfig {
         // 关闭针对post请求的csrf保护
 //        http.csrf(AbstractHttpConfigurer::disable);
 
+        // 配置会话对象, 针对于同一个账号, 最多可以在几个客户端登录
+        http.sessionManagement(session -> { // 最多在1个, 超过则挤掉之前的, 然后定义挤掉后的策略
+            session.maximumSessions(1).expiredSessionStrategy(new MySessionInformationExpiredStrategy());
+        });
+
         // security全局范围内开启后端服务的跨域访问
         http.csrf(Customizer.withDefaults());
         return http.build();
