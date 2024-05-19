@@ -55,7 +55,10 @@ public class WebSecurityConfig {
                 // 基本授权方式: 没有表单授权方式后, 使用该方式会已alert的形式输入用户登录信息, 这种方式没有登出页面, 要么自己写, 要么清缓存, 这种方式没卵用
 //                .httpBasic(Customizer.withDefaults());
 
-        http.exceptionHandling(exception -> exception.authenticationEntryPoint(new MyAuthenticationEntryPoint())); //请求未认证的处理
+        http.exceptionHandling(exception -> {
+                    exception.authenticationEntryPoint(new MyAuthenticationEntryPoint()); //请求未认证的处理
+                    exception.accessDeniedHandler(new MyAccessDeniedHandler()); //当请求因为用户没有权限, 而被拒绝时候的处理
+                });
         // 关闭针对post请求的csrf保护
         http.csrf(AbstractHttpConfigurer::disable);
 
