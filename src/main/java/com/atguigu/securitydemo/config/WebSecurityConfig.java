@@ -37,8 +37,9 @@ public class WebSecurityConfig {
         // 开启授权保护
         http.authorizeHttpRequests(
                 authorize -> authorize
-                        .requestMatchers("/user/list").hasAuthority("USER_LIST") // 拥有USER_LIST权限的用户, 可以访问/user/list资源(USER_ADD/LIST是我们自己定义的)
-                        .requestMatchers("/user/add").hasAuthority("USER_ADD") // 拥有USER_ASS权限的用户, 可以访问/user/add资源
+//                        .requestMatchers("/user/list").hasAuthority("USER_LIST") // 拥有USER_LIST权限的用户, 可以访问/user/list资源(USER_ADD/LIST是我们自己定义的)
+//                        .requestMatchers("/user/add").hasAuthority("USER_ADD") // 拥有USER_ASS权限的用户, 可以访问/user/add资源
+                        .requestMatchers("/user/**").hasRole("ADMIN") // 拥有ADMIN角色的用户可以访问/user/下的所有资源
                         .anyRequest() // 对所有请求开启授权保护
                         .authenticated() // 已认证的请求会被自动授权
                 ); // 授权配置
