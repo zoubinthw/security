@@ -94,7 +94,8 @@ public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPass
                     .disabled(!user.isEnabled()) // 用户是否禁用方法
                     .credentialsExpired(false) // 是否过期方法: 未过期
                     .accountLocked(false) // 用户是否被锁定
-                    .roles("USER") // 必须是ADMIN角色才可以访问/user/**资源
+                    .roles("ADMIN") // 必须是ADMIN角色才可以访问/user/**资源
+                    .authorities("USER_ADD", "USER_EDIT", "USER_DELETE") // 为用户添加多个权限, 这里不要用多次authorities方法调用, 否则最后一次调用会覆盖之前的
                     .build();
         }
     }
